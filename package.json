@@ -12,10 +12,14 @@
     "dev": "nodemon ./src/index.ts"
   },
   "dependencies": {
+    "@node-ts/logger-core": "^0.0.16",
+    "@node-ts/logger-winston": "^0.1.1",
     "@types/pg": "^8.6.5",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "pg": "^8.7.3"
+    "moment": "^2.29.4",
+    "pg": "^8.7.3",
+    "winston": "^3.8.2"
   }
 }
