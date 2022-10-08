@@ -1,20 +1,19 @@
 import { createLogger, transports, format } from "winston";
+import PostgresTransport from "./PostgresTransport";
+import pool from "../config/dbconnector";
 
-const logConfiguration = {
-  transports: [new transports.Console()],
-  format: format.combine(
-    format.colorize(),
-    format.timestamp({
-      format: "MMM-DD-YYYY HH:mm:ss",
-    }),
-    format.printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level}: ${message}`;
-    })
-  ),
+// import {PostgresTransport  } from "winston-postgres-transport";
+import { dbconfig } from "../config/dbconnector";
+const opts = {
+  level: "info",
+  tableName: "winston_logs",
 };
 
-const logDBConf = {
-  transports: [new transports.Console()],
+// Create the instance.
+const postgresTransport = new PostgresTransport(pool, opts);
+
+const logConfiguration = {
+  transports: [new transports.Console(), postgresTransport],
   format: format.combine(
     format.colorize(),
     format.timestamp({
@@ -27,6 +26,6 @@ const logDBConf = {
 };
 
 export const logger = createLogger(logConfiguration);
-export const dbLogger = createLogger(logDBConf);
+// export const dbLogger = createLogger(logDBConf);
 
 // logger.info("Hello world!");

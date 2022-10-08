@@ -1,11 +1,14 @@
 import app from "./App";
 import routes from "./routers";
+import middleware from "./middleware";
 
 const port = process.env.PORT || 3000;
 
 // app.get("/user", user);
 app.use("/test", routes.user);
 app.use("/", routes.todos);
+app.use(middleware.notFound);
+app.use(middleware.errHandlerMiddleware);
 // app.use("/app", app);
 
 app.get("/", (req, res) => {

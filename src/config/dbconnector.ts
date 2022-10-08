@@ -1,7 +1,9 @@
 import { Pool } from "pg";
 
-export default new Pool({
+export const dbconfig = {
   max: 20,
   connectionString: "postgres://user:user@localhost:5432/demodb",
   idleTimeoutMillis: 30000,
-});
+};
+
+export default new Pool(dbconfig);
