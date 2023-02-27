@@ -1,5 +1,5 @@
 export const mongoConfig = {
-  uri: "mongodb+srv://kahheng98q:bydaway@bydaway.lsxnbkm.mongodb.net/?retryWrites=true&w=majority",
+  uri: "",
   dbName: "bydaway",
   collectionName: "mycollection",
 };
