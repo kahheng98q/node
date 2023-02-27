@@ -21,7 +21,7 @@ export default class PostgresTransport extends Transport {
   ): Promise<void> {
     const sql = `INSERT INTO ${this.tableName} (timestamp, level, message, meta) VALUES ($1,$2,$3,$4);`;
     let client: PoolClient | undefined;
-    // console.log("sudd");
+
     try {
       client = await this.pool.connect();
       await client.query(sql, [

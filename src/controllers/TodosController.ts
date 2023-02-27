@@ -1,31 +1,38 @@
 // import pool from "../config/dbconnector";
-import { CommonHelper } from "../helper/common.helper";
-// import { logger } from "../logger/index";
+// import { CommonHelper } from "../helper/common.helper";
+import { PostgresAdapter } from "../adapter/postgreAdapter";
+import { MongoDBAdapter } from "../adapter/mongodbAdapter";
+import { postgresConfig, mongoConfig } from "../config/connection";
 import { asyncWrapper } from "../middleware/async";
 
 export class TodosController {
-  public async test(req: any, res: any) {
-    c: CommonHelper;
-    const sql = "SELECT * FROM users";
-    const todos = await CommonHelper.common(sql);
-    res.send(todos);
-    // res.statusCode(200).json(todos);
-  }
+  public add = async (req: any, res: any) => {
+    // c: postgresConfig;
+    const mongoAdapter = new MongoDBAdapter(mongoConfig);
+    await mongoAdapter.connect();
+    await mongoAdapter.insertUser("1", "KH");
 
-  public get = asyncWrapper(async (req: any, res: any) => {
-    c: CommonHelper;
-    const sql = "SELECT * FROM users";
-    const todos = await CommonHelper.common(sql);
-    res.send(todos);
-  });
+    // const sql = "SELECT * FROM users";
+    // const todos = await postgresAdapter.query(sql);
 
-  // public async test2() {
-  //   return asyncWrapper(this.test);
-  // }
+    res.send({ test: "query" });
+  };
+  public get =
+    // asyncWrapper
+    async (req: any, res: any) => {
+      const mongoAdapter = new MongoDBAdapter(mongoConfig);
+      await mongoAdapter.connect();
+
+      const todos = await mongoAdapter.query('{"name":"KH"}');
+
+      // const sql = "SELECT * FROM users";
+      // const todos = await postgresAdapter.query(sql);
+
+      res.send(todos);
+    };
 }
 
 export interface ResponseBase {
   response: any;
   meta: any;
 }
-// export default TodosController;

@@ -2,8 +2,6 @@ import { createLogger, transports, format } from "winston";
 import PostgresTransport from "./PostgresTransport";
 import pool from "../config/dbconnector";
 
-// import {PostgresTransport  } from "winston-postgres-transport";
-import { dbconfig } from "../config/dbconnector";
 const opts = {
   level: "info",
   tableName: "winston_logs",
@@ -26,6 +24,3 @@ const logConfiguration = {
 };
 
 export const logger = createLogger(logConfiguration);
-// export const dbLogger = createLogger(logDBConf);
-
-// logger.info("Hello world!");

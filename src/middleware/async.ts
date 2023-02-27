@@ -1,11 +1,13 @@
 import console from "console";
 import { NextFunction } from "express";
 import { logger } from "../logger/index";
+import mongoLogger from "../logger/mongodb-logger";
 
 export const asyncWrapper = (fn: Function) => {
   return async (req: any, res: any, next: any) => {
     try {
-      logger.info(`${req.originalUrl} - ${req.method} - ${req.ip}`);
+      // logger.info(`${req.originalUrl} - ${req.method} - ${req.ip}`);
+      mongoLogger.info(`${req.originalUrl} - ${req.method} - ${req.ip}`);
       await fn(req, res, next);
 
       // return next();
@@ -15,15 +17,3 @@ export const asyncWrapper = (fn: Function) => {
     }
   };
 };
-
-// export const testttttt = (fn: any) => {
-//   return (req: any, res: any, next: any) => {
-//     console.log("test");
-//     fn(req, res, next);
-//     next();
-//   };
-// };
-// function greeter(fn: (a: string) => void) {
-//   fn("Hello, World");
-// }
-// export default asyncWrapper;
