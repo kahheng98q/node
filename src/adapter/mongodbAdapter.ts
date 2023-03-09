@@ -1,5 +1,8 @@
 import { MongoClient, Collection, Db } from "mongodb";
 import { Database } from "./adapterInterface";
+import mongoose from "mongoose";
+import { ObjectId } from "bson";
+
 export class MongoDBAdapter implements Database {
   private client: MongoClient = {} as MongoClient;
   private db: Db = {} as Db;
@@ -32,7 +35,7 @@ export class MongoDBAdapter implements Database {
     }
   }
 
-  async query(query: string): Promise<any[]> {
+  async getQuery(query: string): Promise<any[]> {
     try {
       const filter = JSON.parse(query);
       const cursor = await this.collection.find(filter);
@@ -43,11 +46,37 @@ export class MongoDBAdapter implements Database {
       throw error;
     }
   }
-  async insertUser(id: string, name: string): Promise<void> {
+
+  async getListQuery(query: object, projection?: object): Promise<any[]> {
     try {
-      await this.collection.insertOne({ id, name });
+      // const filter = JSON.parse(query);
+      const cursor = await this.collection.find(query, projection);
+      const result = await cursor.toArray();
+      return result;
     } catch (error) {
-      console.error("Error inserting user into MongoDB database:", error);
+      console.error("Error querying MongoDB database:", error);
+      throw error;
+    }
+  }
+
+  async postQuery(id: string, req: any): Promise<void> {
+    try {
+      const filter = { _id: new ObjectId(id) };
+      const update = { $push: { todos: req } };
+
+      await this.collection.updateOne(filter, update);
+    } catch (error) {
+      console.error("Error inserting data into MongoDB database:", error);
+      throw error;
+    }
+  }
+  async putQuery(id: string, req: any): Promise<void> {
+    try {
+      const filter = { _id: new ObjectId(id) };
+      const update = { $set: { todos: req } };
+      await this.collection.insertOne(req);
+    } catch (error) {
+      console.error("Error updating data into MongoDB database:", error);
       throw error;
     }
   }

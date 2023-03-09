@@ -28,7 +28,7 @@ export class PostgresAdapter implements Database {
     }
   }
 
-  async query(sql: string): Promise<any[]> {
+  async getQuery(sql: string): Promise<any[]> {
     try {
       const result = await this.pool.query(sql);
       return result.rows;

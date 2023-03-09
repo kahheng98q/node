@@ -1,0 +1,15 @@
+# Exclude log files
+*.log
+
+# Exclude development files and directories
+node_modules/
+*.test.js
+*.spec.js
+Dockerfile
+docker-compose.yml
+
+# Exclude other unnecessary files
+.git/
+.vscode/
+README.md
+LICENSE
