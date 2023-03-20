@@ -13,3 +13,6 @@ export const errHandlerMiddleware = (
 
   return res.status(500).json({ msg: err });
 };
+// export const normalMiddleware = (req: any, res: any, next: NextFunction) => {
+//   console.log(req, res);
+// };

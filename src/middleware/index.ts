@@ -4,4 +4,5 @@ import { errHandlerMiddleware } from "./error-handler";
 export default {
   notFound,
   errHandlerMiddleware,
+  // normalMiddleware,
 };

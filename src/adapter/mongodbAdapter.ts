@@ -1,4 +1,10 @@
-import { MongoClient, Collection, Db } from "mongodb";
+import {
+  MongoClient,
+  Collection,
+  Db,
+  ServerApiVersion,
+  MongoClientOptions,
+} from "mongodb";
 import { Database } from "./adapterInterface";
 import mongoose from "mongoose";
 import { ObjectId } from "bson";
@@ -15,7 +21,8 @@ export class MongoDBAdapter implements Database {
       this.client = await MongoClient.connect(this.config.uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-      } as any);
+        serverApi: ServerApiVersion.v1,
+      } as MongoClientOptions);
       this.db = this.client.db(this.config.dbName);
       this.collection = this.db.collection(this.config.collectionName);
       console.log("Connected to MongoDB database");
@@ -64,7 +71,12 @@ export class MongoDBAdapter implements Database {
       const filter = { _id: new ObjectId(id) };
       const update = { $push: { todos: req } };
 
-      await this.collection.updateOne(filter, update);
+      const result = await this.collection.updateOne(filter, update);
+      if (result.modifiedCount === 1) {
+        console.log("Data was inserted successfully"); // Data was inserted successfully
+      } else {
+        console.log("Data was not inserted"); // Data was not inserted
+      }
     } catch (error) {
       console.error("Error inserting data into MongoDB database:", error);
       throw error;
@@ -81,13 +93,3 @@ export class MongoDBAdapter implements Database {
     }
   }
 }
-
-// const mongoConfig = {
-//   uri: "mongodb+srv://kahheng98q:bydaway@bydaway.lsxnbkm.mongodb.net/?retryWrites=true&w=majority",
-//   dbName: "mydatabase",
-//   collectionName: "mycollection",
-// };
-
-// const mongoAdapter = new MongoDBAdapter(mongoConfig);
-
-// await mongoAdapter.connect();

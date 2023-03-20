@@ -17,7 +17,7 @@ const logger = winston.createLogger({
       collection: "mongolog",
       dbName: mongoConfig.dbName,
       options: { useUnifiedTopology: true },
-    }),
+    } as any),
   ],
 });
 

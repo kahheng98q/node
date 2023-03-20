@@ -1,13 +1,17 @@
+import dotenv from "dotenv";
+
+dotenv.config();
+
 export const mongoConfig = {
-  uri: "yourmongodbUrl",
+  uri: process.env.DB_MONGODB_URL,
   dbName: "bydaway",
   collectionName: "mycollection",
 };
 
 export const postgresConfig = {
-  user: "user",
+  user: process.env.DB_POSTGRESQL_USER,
   host: "localhost",
-  database: "demodb",
-  password: "user",
+  database: process.env.DB_POSTGRESQL_DB,
+  password: process.env.DB_POSTGRESQL_PASSWORD,
   port: 5432,
 };

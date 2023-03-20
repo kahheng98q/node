@@ -9,8 +9,6 @@ export const asyncWrapper = (fn: Function) => {
       // logger.info(`${req.originalUrl} - ${req.method} - ${req.ip}`);
       mongoLogger.info(`${req.originalUrl} - ${req.method} - ${req.ip}`);
       await fn(req, res, next);
-
-      // return next();
     } catch (err) {
       logger.error(err);
       next(err);
