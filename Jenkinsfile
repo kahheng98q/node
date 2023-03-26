@@ -4,15 +4,22 @@ pipeline {
     triggers {
         pollSCM '* * * * *'
     }
-    stages {
-        stage('Build') {
-            steps {
-                echo "Building.."
-                sh '''
-                echo "doing build stuff.."
-                '''
-            }
+   environment {
+    DOCKER_REGISTRY = "mydockerregistry.com"
+    KUBECONFIG = "/path/to/kubeconfig"
+  }
+  
+  stages {
+    stage('Build Docker image') {
+      steps {
+        script {
+          docker.build("${DOCKER_REGISTRY}/myapp:${BUILD_NUMBER}")
+          docker.withRegistry("${DOCKER_REGISTRY}", "docker-registry") {
+            docker.image("${DOCKER_REGISTRY}/myapp:${BUILD_NUMBER}").push()
+          }
         }
+      }
+    }
         stage('Test') {
             steps {
                 echo "Testing.."
