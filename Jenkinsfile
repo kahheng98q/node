@@ -5,7 +5,7 @@ pipeline {
         pollSCM '* * * * *'
     }
    environment {
-    DOCKER_REGISTRY = "mydockerregistry.com"
+    DOCKER_REGISTRY = "kahheng"
     KUBECONFIG = "/path/to/kubeconfig"
   }
   
