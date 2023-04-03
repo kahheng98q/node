@@ -9,16 +9,16 @@ pipeline {
     KUBECONFIG = "/path/to/kubeconfig"
   }
   
-  stages {
-    stage('Build Docker image') {
-      steps {
-        script {
-          docker.build("${DOCKER_REGISTRY}/myapp:${BUILD_NUMBER}")
-          docker.withRegistry("${DOCKER_REGISTRY}", "docker-registry") {
-            docker.image("${DOCKER_REGISTRY}/myapp:${BUILD_NUMBER}").push()
-          }
+   stages {
+        stage('Build and Push Docker image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'docker build -t kahheng/my-node:1.0 .'
+                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+                    sh 'docker push kahheng/my-node:1.0'
+                }
+            }
         }
-      }
     }
         stage('Test') {
             steps {
